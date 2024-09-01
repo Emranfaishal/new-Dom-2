@@ -49,6 +49,11 @@ function curredElementById(elementID, value) {
 function hiddenKeyButtonPress(event) {
     const playerPressed = event.key;
     console.log('playerPressed', playerPressed);
+
+    if (playerPressed === 'Escape') {
+        gameOver();
+    }
+
     const curredAlphabetsElement = document.getElementById('curred-alphabet');
     const curredAlphabet = curredAlphabetsElement.innerText;
     const expandAlphabet = curredAlphabet.toLowerCase();
@@ -68,7 +73,7 @@ function hiddenKeyButtonPress(event) {
         const curredScore = curredScoreElement('curred-life');
         const upCurredScore = curredScore - 1;
         curredElementById('curred-life', upCurredScore);
-        if(upCurredScore === 0){
+        if (upCurredScore === 0) {
             gameOver();
         }
     }
@@ -78,13 +83,33 @@ document.addEventListener('keyup', hiddenKeyButtonPress);
 
 function pay() {
     hideElementID('home-score');
+    hideElementID('final-score')
     shoElementID('play-ground');
+
+    curredElementById('curred-life', 5);
+    curredElementById('curred-score', 0);
     containerGame();
     highLightColor();
 }
-function gameOver(){
+function getElementTextByID(elementID) {
+    const element = document.getElementById(elementID);
+    const text = element.innerText;
+    return text;
+}
+
+
+function gameOver() {
     hideElementID('play-ground');
     shoElementID('final-score');
+
+    const lestScore = curredScoreElement('curred-score');
+    console.log(lestScore);
+    curredElementById('game-end', lestScore);
+
+
+    const curredAlphabetText = getElementTextByID('curred-alphabet');
+    removeHighLight(curredAlphabetText);
+
 }
 
 
