@@ -1,42 +1,90 @@
-function hideElementID(elementID){
-   const element = document.getElementById(elementID);
-   element.classList.add('hidden');
+function hideElementID(elementID) {
+    const element = document.getElementById(elementID);
+    element.classList.add('hidden');
 }
-function shoElementID(elementID){
-    const element =document.getElementById(elementID);
+function shoElementID(elementID) {
+    const element = document.getElementById(elementID);
     element.classList.remove('hidden');
 }
 
-function HighLightColor(elementId){
-   const element = document.getElementById(elementId);
-   element.classList.add('bg-orange-400')
+function highLightColor(elementId) {
+    const element = document.getElementById(elementId);
+    element.classList.add('bg-orange-400');
+}
+function removeHighLight(elementID) {
+    const element = document.getElementById(elementID);
+    element.classList.remove('bg-orange-400');
 }
 
 
-function getRandomAlphabet(){
+function getRandomAlphabet() {
     const alphabetString = 'abcdefghijklmnopqrstuvwxyz';
     const alphabets = alphabetString.split('');
     // console.log(alphabets);
-    const randomNumber = Math.random()*25;
+    const randomNumber = Math.random() * 25;
     const index = Math.round(randomNumber);
-    const alphabet =alphabets[index];
+    const alphabet = alphabets[index];
     // console.log(index,alphabet);
     return alphabet;
 }
 
-function containerGame (){
-    const alphabets =getRandomAlphabet();
-    console.log('tome name ke',alphabets);
-    const cerredAlphabets = document.getElementById('cerred-alphabet');
-    cerredAlphabets.innerText= alphabets;
+function containerGame() {
+    const alphabets = getRandomAlphabet();
+    console.log('tome name ke', alphabets);
+    const curredAlphabets = document.getElementById('curred-alphabet');
+    curredAlphabets.innerText = alphabets;
     // color tag 
-    HighLightColor(alphabets);
+    highLightColor(alphabets);
 }
+function curredScoreElement(elementID) {
+    const element = document.getElementById(elementID);
+    const elementValueText = element.innerText;
+    const value = parseInt(elementValueText);
+    return value;
+}
+function curredElementById(elementID, value) {
+    const element = document.getElementById(elementID);
+    element.innerText = value;
+}
+function hiddenKeyButtonPress(event) {
+    const playerPressed = event.key;
+    console.log('playerPressed', playerPressed);
+    const curredAlphabetsElement = document.getElementById('curred-alphabet');
+    const curredAlphabet = curredAlphabetsElement.innerText;
+    const expandAlphabet = curredAlphabet.toLowerCase();
+    console.log(expandAlphabet, playerPressed);
+
+    if (expandAlphabet === playerPressed) {
+        console.log('you get a point')
+
+        const curredScore = curredScoreElement('curred-score');
+        const upCurredScore = curredScore + 1;
+        curredElementById('curred-score', upCurredScore);
+        removeHighLight(playerPressed);
+        containerGame();
+    }
+    else {
+        console.log('you missed ,you lost point');
+        const curredScore = curredScoreElement('curred-life');
+        const upCurredScore = curredScore - 1;
+        curredElementById('curred-life', upCurredScore);
+        if(upCurredScore === 0){
+            gameOver();
+        }
+    }
+}
+document.addEventListener('keyup', hiddenKeyButtonPress);
 
 
-function pay(){
+function pay() {
     hideElementID('home-score');
     shoElementID('play-ground');
     containerGame();
-    HighLightColor();
+    highLightColor();
 }
+function gameOver(){
+    hideElementID('play-ground');
+    shoElementID('final-score');
+}
+
+
